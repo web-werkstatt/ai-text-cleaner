@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+*.pkl
+.env
+.env.local
+.DS_Store
+.idea/
+.vscode/
+
+# Lokal auto-generiert von Projekt-Tracker
+project.json

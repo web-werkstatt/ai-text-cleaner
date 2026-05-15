@@ -1,0 +1,92 @@
+version: 1
+language: de
+
+generic_intros:
+  - pattern: '\bIn der heutigen Zeit[, ]+'
+    replacement: 'Heute '
+    reason: generische_intro
+  - pattern: '\bIn einer Welt[, ]?in der\b'
+    replacement: 'Wo'
+    reason: generische_intro
+  - pattern: '\bEs ist allgemein bekannt[, ]+(?:dass\s+)?'
+    replacement: ''
+    reason: generische_intro
+  - pattern: '\bIn der modernen Welt[, ]+'
+    replacement: ''
+    reason: generische_intro
+  - pattern: '\bIm digitalen Zeitalter[, ]+'
+    replacement: ''
+    reason: generische_intro
+
+connector_phrases:
+  - pattern: '\bDarüber hinaus[, ]+'
+    replacement: 'Außerdem '
+    reason: floskel_konnektor
+  - pattern: '\bIm Folgenden[, ]+'
+    replacement: ''
+    reason: floskel_konnektor
+  - pattern: '\bEs ist wichtig zu beachten,?\s+(?:dass\s+)?'
+    replacement: ''
+    reason: floskel_konnektor
+  - pattern: '\bEs sei darauf hingewiesen,?\s+(?:dass\s+)?'
+    replacement: ''
+    reason: floskel_konnektor
+  - pattern: '\bZusammenfassend lässt sich sagen[, ]+(?:dass\s+)?'
+    replacement: 'Kurz: '
+    reason: floskel_konnektor
+  - pattern: '\bAbschließend lässt sich festhalten[, ]+(?:dass\s+)?'
+    replacement: 'Fazit: '
+    reason: floskel_konnektor
+  - pattern: '\bNicht zuletzt[, ]+'
+    replacement: 'Außerdem '
+    reason: floskel_konnektor
+  - pattern: '\bIn diesem Zusammenhang[, ]+'
+    replacement: ''
+    reason: floskel_konnektor
+  - pattern: '\bVor diesem Hintergrund[, ]+'
+    replacement: ''
+    reason: floskel_konnektor
+
+buzzword_verbs:
+  - pattern: '\brevolutioniert\b'
+    replacement: 'verändert'
+    reason: buzzword
+  - pattern: '\brevolutionieren\b'
+    replacement: 'verändern'
+    reason: buzzword
+  - pattern: '\boptimiert\b'
+    replacement: 'verbessert'
+    reason: buzzword
+  - pattern: '\boptimieren\b'
+    replacement: 'verbessern'
+    reason: buzzword
+  - pattern: '\btransformiert\b'
+    replacement: 'verändert'
+    reason: buzzword
+  - pattern: '\bleveragen?\b'
+    replacement: 'nutzen'
+    reason: buzzword
+  - pattern: '\bentfesseln?\b'
+    replacement: 'freisetzen'
+    reason: buzzword
+  - pattern: '\bdisruptiv(?:e[nrms]?)?\b'
+    replacement: 'verändernd'
+    reason: buzzword
+
+headline_softeners:
+  - pattern: '^(#{1,6})\s+Die\s+(ultimative|komplette|perfekte|umfassende|definitive)\s+'
+    replacement: '\1 '
+    reason: headline_glaettung
+    multiline: true
+  - pattern: '^(#{1,6})\s+Der\s+(ultimative|komplette|perfekte|umfassende|definitive)\s+'
+    replacement: '\1 '
+    reason: headline_glaettung
+    multiline: true
+  - pattern: '^(#{1,6})\s+Das\s+(ultimative|komplette|perfekte|umfassende|definitive)\s+'
+    replacement: '\1 '
+    reason: headline_glaettung
+    multiline: true
+
+em_dashes:
+  max_per_paragraph: 1
+  replacement_strategy: comma  # comma | period

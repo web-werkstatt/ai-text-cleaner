@@ -1,0 +1,11 @@
+{
+  "title": "KI in der Praxis",
+  "blocks": [
+    {"type": "heading", "level": 1, "text": "Die ultimative Anleitung zu KI"},
+    {"type": "paragraph", "text": "In der heutigen Zeit revolutioniert KI die Branche. Darüber hinaus optimieren wir Prozesse."},
+    {"type": "code", "lang": "python", "text": "def revolutioniere():\n    return 'In der heutigen Zeit'"},
+    {"type": "paragraph", "text": "Es ist wichtig zu beachten, dass die Zahl 42 wichtig ist — und 1337 — und 9000."},
+    {"type": "list", "items": ["Darüber hinaus schnell", "Zusammenfassend lässt sich sagen, dass es gut ist"]},
+    {"type": "image", "url": "https://example.com/a.png", "alt": "In der heutigen Zeit"}
+  ]
+}
