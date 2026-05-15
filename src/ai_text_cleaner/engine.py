@@ -31,6 +31,7 @@ class Mode(str, Enum):
     RULES_ONLY = "rules_only"
     HYBRID = "hybrid"
     LLM_ONLY = "llm_only"
+    HYBRID_ML = "hybrid_ml"
 
 
 @dataclass
@@ -40,6 +41,9 @@ class CleanResult:
     changes: list[dict] = field(default_factory=list)
     llm_used: bool = False
     fallback_reason: str | None = None
+    trajectory: list[float] | None = None
+    iterations: int = 0
+    stop_reason: str | None = None
 
 
 def _load_patterns(path: str | Path | None = None) -> dict:
@@ -97,12 +101,31 @@ def clean_text(
     llm_api_key: str | None = None,
     patterns_path: str | Path | None = None,
     llm_client: Any | None = None,
+    eval_config: Any | None = None,
+    score_provider: Any | None = None,
+    polish_provider: Any | None = None,
 ) -> CleanResult:
     """Reinigt einen Text. Tier 1 → Tier 2 abhängig von `mode`.
 
     Bei fehlendem API-Key oder fehlendem `anthropic`-Paket wird der LLM-Schritt
     übersprungen und das Ergebnis von Tier 1 zurückgegeben (mit `fallback_reason`).
     """
+    if mode == Mode.HYBRID_ML:
+        from .eval_loop.engine_adapter import run_hybrid_ml
+
+        return run_hybrid_ml(
+            text,
+            aggressive=aggressive,
+            enabled_rules=enabled_rules,
+            llm_model=llm_model,
+            llm_api_key=llm_api_key,
+            patterns_path=patterns_path,
+            llm_client=llm_client,
+            eval_config=eval_config,
+            score_provider=score_provider,
+            polish_provider=polish_provider,
+        )
+
     patterns = _load_patterns(patterns_path)
     rules_set = set(enabled_rules) if enabled_rules else None
     em_before = count_em_dashes(text)

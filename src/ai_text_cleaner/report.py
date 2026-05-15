@@ -17,6 +17,8 @@ class CleanReport:
     llm_used: bool = False
     fallback_reason: str | None = None
     iterations: int = 0
+    trajectory: list[float] | None = None
+    stop_reason: str | None = None
 
     def by_rule(self) -> dict[str, int]:
         counter: Counter[str] = Counter()
@@ -40,6 +42,11 @@ class CleanReport:
             lines.append(f"- Fallback-Grund: {self.fallback_reason}")
         if self.iterations:
             lines.append(f"- Iterationen: {self.iterations}")
+        if self.trajectory:
+            scores = " → ".join(f"{s:.3f}" for s in self.trajectory)
+            lines.append(f"- Score-Verlauf: {scores}")
+        if self.stop_reason:
+            lines.append(f"- Stop-Grund: {self.stop_reason}")
         if self.sentence_stats:
             s = self.sentence_stats
             lines.append("")
@@ -79,6 +86,8 @@ class CleanReport:
             "llm_used": self.llm_used,
             "fallback_reason": self.fallback_reason,
             "iterations": self.iterations,
+            "trajectory": self.trajectory,
+            "stop_reason": self.stop_reason,
             "by_rule": self.by_rule(),
             "by_reason": self.by_reason(),
             "sentence_stats": self.sentence_stats,
