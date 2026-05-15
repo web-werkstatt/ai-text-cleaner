@@ -42,7 +42,7 @@ Issues = "https://github.com/web-werkstatt/ai-text-cleaner/issues"
 where = ["src"]
 
 [tool.setuptools.package-data]
-ai_text_cleaner = ["*.yaml", "*.yml"]
+ai_text_cleaner = ["*.yaml", "*.yml", "classifier/*.pkl", "classifier/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

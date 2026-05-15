@@ -1,0 +1,4 @@
+include README.md
+include LICENSE
+recursive-include src/ai_text_cleaner *.yaml *.yml *.pkl
+recursive-include src/ai_text_cleaner/classifier *.json
