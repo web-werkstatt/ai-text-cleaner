@@ -1,0 +1,4 @@
+# Roh-Texte bleiben außerhalb des Public-Repos (Lizenz)
+raw/
+
+# Sprint 25a: nur features/*.csv ist re-distributable

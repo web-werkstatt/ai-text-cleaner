@@ -11,7 +11,7 @@ Zwei Stufen, optional kombinierbar:
 - **Tier 1 — Rules** (stdlib + YAML, offline, gratis, deterministisch)
 - **Tier 2 — LLM-Polish** (Anthropic Claude, Default `claude-haiku-4-5-20251001`, optional)
 
-Geplant für v0.3.0: **Tier 3 — Adversarial-Eval-Loop** mit eigenem Klassifikator.
+Geplant für v0.3.0: **Tier 3 — Adversarial-Eval-Loop** mit eigenem Klassifikator (siehe Sprint 25).
 
 ## Installation
 
@@ -19,6 +19,13 @@ Geplant für v0.3.0: **Tier 3 — Adversarial-Eval-Loop** mit eigenem Klassifika
 pip install ai-text-cleaner                 # nur Rules
 pip install ai-text-cleaner[llm]            # mit LLM-Polish
 pip install ai-text-cleaner[llm,clipboard]  # voll
+pip install ai-text-cleaner[ml]             # Tier-3-Vorbereitung: spaCy + scikit-learn
+```
+
+Für `[ml]` zusätzlich:
+
+```bash
+python -m spacy download de_core_news_sm
 ```
 
 ## CLI
@@ -66,6 +73,20 @@ Erweiterung der Patterns via eigene YAML: `ai-text-cleaner artikel.md --patterns
 - **„100% KI-frei" ist technisch nicht garantierbar.** Selbst menschliche Texte werden von AI-Detectors mit ~5–15% Falsch-Positiv-Rate als „KI" klassifiziert. Das Tool senkt die Wahrscheinlichkeit deutlich, kann sie aber nicht eliminieren.
 - v1 ist DE-fokussiert. EN-Patterns sind nicht im Scope.
 - LLM-Stufe ist nicht-deterministisch — Output variiert bei wiederholtem Lauf.
+
+## Tier 3 (in Entwicklung)
+
+Sprint 25 baut einen eigenen Klassifikator + iterativen Eval-Loop:
+
+1. **25a — Korpus + Feature-Extraktion** (dieser Stand): Module unter `ai_text_cleaner.features` extrahieren stilistische Features (Satzlängen, n-gramme, POS via spaCy, Interpunktion) als CSV. Roh-Korpus bleibt außerhalb des Repos (`corpus/raw/` ist gitignored).
+2. **25b — Klassifikator-Training**: scikit-learn auf den Feature-CSVs, persistiert als `.joblib`.
+3. **25c — Eval-Loop**: Tier-2-Polish in Schleife, Stopp wenn Score nicht weiter sinkt.
+4. **25d — Release v0.3.0**: CLI-Flags `--score`, `--eval-loop`, API-Erweiterung.
+
+Ehrliche Limits (siehe `sprints/sprint-25.md`):
+- Der finale Score ist **eine Indikation, kein Garantie-Siegel** — auch ein perfekter Klassifikator hat eine Falsch-Positiv-Rate von 5–15% auf menschlichen Texten.
+- Klassifikator und Cleaner werden auf demselben Heuristik-Set optimiert → Overfitting-Risiko. Mitigation: Test-Set bleibt vor dem Eval-Loop versteckt.
+- Korpus-Roh-Texte sind nicht im Public-Repo (Lizenz). Nur extrahierte Feature-CSVs werden geteilt.
 
 ## Tests
 
