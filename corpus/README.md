@@ -45,6 +45,43 @@ Originaltexte, keine Substrings, keine Verlinkungen zu Volltext-Quellen.
 
 **Mindestziel:** 5000 KI-generierte Artikel.
 
+## Schnellster Weg: Import aus Blog-Machine-DB
+
+Wenn du Blog Machine bereits aktiv nutzt, hast du implizit gelabelte
+Daten in der DB — jede Draft-Session hat eine `version=1` vom LLM und eine
+spätere Version mit deinen Edits. Das Script `scripts/import_blogmachine_corpus.py`
+zieht diese Paare und legt sie als `.txt`-Dateien ab.
+
+```bash
+# Optional Extra installieren (einmalig)
+pip install -e ".[corpus]"
+
+# Trockenlauf — zeigt, was gefunden würde
+python scripts/import_blogmachine_corpus.py \
+  --db-url postgresql://blogmachine:blogmachine@localhost:5434/blogmachine \
+  --output corpus/raw \
+  --min-words 200 \
+  --dry-run
+
+# Echter Lauf
+python scripts/import_blogmachine_corpus.py \
+  --db-url postgresql://blogmachine:blogmachine@localhost:5434/blogmachine \
+  --output corpus/raw \
+  --min-words 200
+```
+
+**Filter:**
+- Nur Sessions mit ≥ 2 Versionen (sonst kein Edit-Signal)
+- `version=1` mit `source_provider ∈ {claude, anthropic, openai, gpt, gemini}` → `corpus/raw/ai/`
+- Höchste Version (oder `status='published'`) → `corpus/raw/human/`
+- Skip wenn v1 und vN inhaltlich identisch sind
+- Skip wenn Text < `--min-words` nach Markdown-Stripping
+
+**Ohne psycopg** (z. B. wenn die DB auf einem entfernten Host läuft): nutze
+die SQL-Vorlage `scripts/blogmachine_export.sql` direkt mit `psql`. Sie
+schreibt TSV nach stdout, ein kleiner Python-Einzeiler teilt das in
+Dateien auf.
+
 ## Feature-Extraktion
 
 ```bash
